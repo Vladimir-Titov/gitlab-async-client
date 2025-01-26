@@ -20,7 +20,7 @@ class MRScopeState(str, Enum):
     assigned_to_me = 'assigned_to_me'
 
 
-class MrAuthor(ExtendBaseModel):
+class MergeRequestAuthor(ExtendBaseModel):
     id: int
     username: str
     name: str
@@ -42,7 +42,7 @@ class MergeRequest(ExtendBaseModel):
     merged_by: str | None
     merge_user: str | None
     merged_at: ArrowPydanticV2 | None
-    author: MrAuthor
+    author: MergeRequestAuthor
     closed_by: str | None
     closed_at: str | None
     target_branch: str
@@ -52,6 +52,43 @@ class MergeRequest(ExtendBaseModel):
 
     class Config:
         extra = 'ignore'
+
+
+class MergeRequestDiff(ExtendBaseModel):
+    deleted_file: bool
+    diff: str
+    generated_file: bool
+    new_file: bool
+    new_path: str
+    old_path: str
+    renamed_file: bool
+
+
+class MergeRequestNotes(ExtendBaseModel):
+    id: int
+    attachment: str | None
+    author: MergeRequestAuthor
+    created_at: ArrowPydanticV2
+    noteable_id: int
+    noteable_iid: int
+    project_id: int
+    resolvable: bool
+    system: bool
+    type: str | None
+    updated_at: ArrowPydanticV2
+    body: str
+    noteable_type: str
+
+    class Config:
+        extra = 'ignore'
+
+
+class MergeRequestNotesList(RootModel[list[MergeRequestNotes]]):
+    pass
+
+
+class MergeRequestDiffList(RootModel[list[MergeRequestDiff]]):
+    pass
 
 
 class MergeRequestsList(RootModel[list[MergeRequest]]):

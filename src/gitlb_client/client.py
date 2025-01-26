@@ -1,5 +1,4 @@
 from enum import Enum
-from pprint import pprint
 from typing import Any
 from urllib.parse import urljoin
 from . import types
@@ -87,11 +86,17 @@ class GitlabHTTPClient:
         return types.MergeRequestsList.model_validate(response)
 
     async def get_single_project_mr(self, project_id: int, mr_iid: int) -> types.MergeRequest:
-        response = await self._request(method='GET', path=f'/api/v4/projects/{project_id}/merge_requests/{mr_iid}', )
+        response = await self._request(method='GET', path=f'/api/v4/projects/{project_id}/merge_requests/{mr_iid}')
         return types.MergeRequest.model_validate(response)
 
-    async def get_project_mr_diff(self, project_id: int, mr_id: int):
-        pass
+    async def get_project_mr_diff(self, project_id: int, mr_iid: int):
+        response = await self._request(
+            method='GET', path=f'/api/v4/projects/{project_id}/merge_requests/{mr_iid}/diffs',
+        )
+        return types.MergeRequestDiffList.model_validate(response)
 
-    async def get_mr_comments(self, project_id: int, mr_id: int):
-        pass
+    async def get_project_mr_comments(self, project_id: int, mr_iid: int):
+        response = await self._request(
+            method='GET', path=f'/api/v4/projects/{project_id}/merge_requests/{mr_iid}/notes',
+        )
+        return types.MergeRequestNotesList.model_validate(response)
