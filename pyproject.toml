@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "A simple asyncronous gitlab http client"
 readme = "README.md"
 authors = [
-    { name = "vtitov", email = "v.v.titov94@gmail.com" }
+    { name = "vtitov", email = "v.v.titov94@gmail.com", tg = "exwe11" }
 ]
 requires-python = ">=3.12"
 dependencies = [
