@@ -69,11 +69,26 @@ class GitlabHTTPClient:
         response = await self._request(method='GET', path='api/v4/projects')
         return types.ProjectList.model_validate(response)
 
-    async def get_project_mrs(self, project_id: int):
-        pass
+    async def get_single_project(self, project_id: int) -> types.Project:
+        response = await self._request(method='GET', path=f'api/v4/projects/{project_id}')
+        return types.Project.model_validate(response)
 
-    async def get_project_mr(self, project_id: int):
-        pass
+    async def get_project_mrs(
+        self,
+        project_id: int,
+        mr_state: types.MRState = types.MRState.opened,
+        mr_scope: types.MRScopeState = types.MRScopeState.all,
+        **filters,
+    ) -> types.MergeRequestsList:
+        params = {'scope': mr_scope.value, 'state': mr_state.value, **filters}
+        response = await self._request(
+            method='GET', params=params, path=f'/api/v4/projects/{project_id}/merge_requests',
+        )
+        return types.MergeRequestsList.model_validate(response)
+
+    async def get_single_project_mr(self, project_id: int, mr_iid: int) -> types.MergeRequest:
+        response = await self._request(method='GET', path=f'/api/v4/projects/{project_id}/merge_requests/{mr_iid}', )
+        return types.MergeRequest.model_validate(response)
 
     async def get_project_mr_diff(self, project_id: int, mr_id: int):
         pass
