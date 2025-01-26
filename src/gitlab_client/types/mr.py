@@ -1,9 +1,9 @@
 from enum import Enum
 
-from gitlb_client.types.base import ExtendBaseModel
+from gitlab_client.types.base import ExtendBaseModel
 from pydantic import RootModel, HttpUrl
 
-from gitlb_client.types.extend import ArrowPydanticV2
+from gitlab_client.types.extend import ArrowPydanticV2
 
 
 class MRState(str, Enum):
