@@ -36,4 +36,4 @@ jobs:
         uvx ruff check src
     - name: Test with pytest
       run: |
-        pytest -vv
+        uv run pytest -vv
