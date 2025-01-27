@@ -1,7 +1,7 @@
 from enum import Enum
 
 from gitlab_async_client.types.base import ExtendBaseModel
-from pydantic import RootModel, HttpUrl
+from pydantic import RootModel, HttpUrl, ConfigDict
 
 from gitlab_async_client.types.extend import ArrowPydanticV2
 
@@ -21,16 +21,17 @@ class MRScopeState(str, Enum):
 
 
 class MergeRequestAuthor(ExtendBaseModel):
+    model_config = ConfigDict(extra='ignore')
+
     id: int
     username: str
     name: str
     web_url: HttpUrl
 
-    class Config:
-        extra = 'ignore'
-
 
 class MergeRequest(ExtendBaseModel):
+    model_config = ConfigDict(extra='ignore')
+
     id: int
     iid: int
     project_id: int
@@ -50,11 +51,10 @@ class MergeRequest(ExtendBaseModel):
     merge_status: str
     has_conflicts: bool
 
-    class Config:
-        extra = 'ignore'
-
 
 class MergeRequestDiff(ExtendBaseModel):
+    model_config = ConfigDict(extra='ignore')
+
     deleted_file: bool
     diff: str
     generated_file: bool
@@ -65,6 +65,8 @@ class MergeRequestDiff(ExtendBaseModel):
 
 
 class MergeRequestNotes(ExtendBaseModel):
+    model_config = ConfigDict(extra='ignore')
+
     id: int
     attachment: str | None
     author: MergeRequestAuthor
@@ -78,9 +80,6 @@ class MergeRequestNotes(ExtendBaseModel):
     updated_at: ArrowPydanticV2
     body: str
     noteable_type: str
-
-    class Config:
-        extra = 'ignore'
 
 
 class MergeRequestNotesList(RootModel[list[MergeRequestNotes]]):

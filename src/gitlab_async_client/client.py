@@ -49,18 +49,31 @@ class GitlabHTTPClient:
             self.access_params = {'private_token': access_token}
 
     async def _request(
-        self, method: str, path: str, headers: dict | None = None, params: dict | None = None, *args, **kwargs,
+        self,
+        method: str,
+        path: str,
+        headers: dict | None = None,
+        params: dict | None = None,
+        *args,
+        **kwargs,
     ) -> Any:
         url = urljoin(self.base_url, path)
 
         if self.auth_type in (GitlabAuthType.bearer, GitlabAuthType.header):
-            headers = {**self.access_headers, **headers} if headers else self.access_headers
+            headers = (
+                {**self.access_headers, **headers} if headers else self.access_headers
+            )
 
         if self.auth_type == GitlabAuthType.query_params:
             params = {**self.access_params, **params} if params else self.access_params
 
         async with self.session.request(
-            method=method, url=url, headers=headers, params=params, *args, **kwargs,
+            method=method,
+            url=url,
+            headers=headers,
+            params=params,
+            *args,
+            **kwargs,
         ) as resp:
             return await resp.json()
 
@@ -69,7 +82,9 @@ class GitlabHTTPClient:
         return types.ProjectList.model_validate(response)
 
     async def get_single_project(self, project_id: int) -> types.Project:
-        response = await self._request(method='GET', path=f'api/v4/projects/{project_id}')
+        response = await self._request(
+            method='GET', path=f'api/v4/projects/{project_id}'
+        )
         return types.Project.model_validate(response)
 
     async def get_project_mrs(
@@ -81,22 +96,30 @@ class GitlabHTTPClient:
     ) -> types.MergeRequestsList:
         params = {'scope': mr_scope.value, 'state': mr_state.value, **filters}
         response = await self._request(
-            method='GET', params=params, path=f'/api/v4/projects/{project_id}/merge_requests',
+            method='GET',
+            params=params,
+            path=f'/api/v4/projects/{project_id}/merge_requests',
         )
         return types.MergeRequestsList.model_validate(response)
 
-    async def get_single_project_mr(self, project_id: int, mr_iid: int) -> types.MergeRequest:
-        response = await self._request(method='GET', path=f'/api/v4/projects/{project_id}/merge_requests/{mr_iid}')
+    async def get_single_project_mr(
+        self, project_id: int, mr_iid: int
+    ) -> types.MergeRequest:
+        response = await self._request(
+            method='GET', path=f'/api/v4/projects/{project_id}/merge_requests/{mr_iid}'
+        )
         return types.MergeRequest.model_validate(response)
 
     async def get_project_mr_diff(self, project_id: int, mr_iid: int):
         response = await self._request(
-            method='GET', path=f'/api/v4/projects/{project_id}/merge_requests/{mr_iid}/diffs',
+            method='GET',
+            path=f'/api/v4/projects/{project_id}/merge_requests/{mr_iid}/diffs',
         )
         return types.MergeRequestDiffList.model_validate(response)
 
     async def get_project_mr_comments(self, project_id: int, mr_iid: int):
         response = await self._request(
-            method='GET', path=f'/api/v4/projects/{project_id}/merge_requests/{mr_iid}/notes',
+            method='GET',
+            path=f'/api/v4/projects/{project_id}/merge_requests/{mr_iid}/notes',
         )
         return types.MergeRequestNotesList.model_validate(response)
