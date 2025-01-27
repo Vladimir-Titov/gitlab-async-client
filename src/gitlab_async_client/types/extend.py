@@ -15,7 +15,6 @@ class ArrowPydanticV2(arrow.Arrow):
         _source_type: Any,
         _handler: GetCoreSchemaHandler,
     ) -> core_schema.CoreSchema:
-
         def validate_by_arrow(value) -> arrow.Arrow:
             try:
                 return arrow.get(value)
@@ -28,5 +27,7 @@ class ArrowPydanticV2(arrow.Arrow):
         return core_schema.no_info_after_validator_function(
             function=validate_by_arrow,
             schema=core_schema.str_schema(),
-            serialization=core_schema.wrap_serializer_function_ser_schema(arrow_serialization, info_arg=True),
+            serialization=core_schema.wrap_serializer_function_ser_schema(
+                arrow_serialization, info_arg=True
+            ),
         )
