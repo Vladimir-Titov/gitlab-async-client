@@ -110,7 +110,7 @@ class GitlabHTTPClient:
         )
         return types.MergeRequest.model_validate(response)
 
-    async def get_project_mr_diff(self, project_id: int, mr_iid: int):
+    async def get_project_mr_diffs(self, project_id: int, mr_iid: int):
         response = await self._request(
             method='GET',
             path=f'/api/v4/projects/{project_id}/merge_requests/{mr_iid}/diffs',
