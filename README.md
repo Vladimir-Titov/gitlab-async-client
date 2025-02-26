@@ -1,6 +1,6 @@
 [![package test](https://github.com/Vladimir-Titov/gitlab-async-client/actions/workflows/package-test.yml/badge.svg?branch=main)](https://github.com/Vladimir-Titov/gitlab-async-client/actions/workflows/package-test.yml)
 
-```
+```python
 import aiohttp
 import asyncio
 from gitlab_async_client.client import GitlabHTTPClient, GitlabAuthType
